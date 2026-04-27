@@ -1,8 +1,8 @@
-"""Minimal CLI for ad-hoc invocations.
+"""Entry point: `python main.py "incident description"`.
 
-Usage:
-    python -m rca_agent "Service X 5xx spike at 10:00 UTC"
-    rca-agent "..."     # via the [project.scripts] entry point
+Keeps the CLI deliberately thin — argparse, build the agent, invoke it
+once, print the final assistant message. All real wiring lives in
+`rca_agent.agent.build_agent`.
 """
 from __future__ import annotations
 
@@ -20,11 +20,14 @@ def _final_text(messages: list) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="rca-agent", description=__doc__)
+    parser = argparse.ArgumentParser(
+        prog="rca-agent",
+        description="Run the RCA auto-diagnosis agent on a single incident.",
+    )
     parser.add_argument("incident", help="Free-form incident description")
     args = parser.parse_args(argv)
 
-    # Late import — avoids loading deepagents (and its model client) for `--help`.
+    # Late import: avoids loading deepagents (and its model client) for `--help`.
     from rca_agent import build_agent
 
     agent = build_agent()

@@ -20,7 +20,7 @@ one-file change.
 pip install -e ".[dev]"
 cp .env.example .env   # fill in RCA_MODEL / RCA_MODEL_BASE_URL / RCA_MODEL_API_KEY
 pytest -q              # offline tests, no network
-python -m rca_agent "Service X 5xx spike at 10:00 UTC"
+python main.py "Service X 5xx spike at 10:00 UTC"
 ```
 
 ## Layout
@@ -34,6 +34,6 @@ src/rca_agent/
   tools/            # @rca_tool stubs (run_shell, search_logs, ...)
   subagents/        # log_analyzer, metric_analyzer, hypothesis_validator
   skills/           # SKILL.md packs (deepagents SkillsMiddleware)
-  cli.py
+main.py             # `python main.py "incident text"` entry point
 tests/              # offline tests using FakeListChatModel
 ```
